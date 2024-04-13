@@ -1,2 +1,2 @@
 # OOPSOLIDHuman
-Creates Human using Builder pattern
+Creates Human using Builder and Bridge pattern
