@@ -62,7 +62,9 @@ class Alien(Animal):
 
 # Builder
 class AnimalBuilder:
-    def __init__(self, species:Animal, name:str, age:int, sex:Sex, color:Color):
+    def __init__(self, species:Animal, name:str, age:int, sex:Sex, color:Color, *args):
+        if args != ():
+            raise TypeError(f"Wrong number of arguments, {args} was excess")
         self.check_types(species, name, age, sex, color)
         self.animal = species(name, age)
         self.build_animal(sex, color)
@@ -97,12 +99,12 @@ class AnimalBuilder:
     def __str__(self) -> str:
         return str(self.animal)
     
+if __name__ == "__main__":
+    bob = AnimalBuilder(Human, "Bob", 18, SexMale, ColorBlack) 
+    print(bob)
 
-bob = AnimalBuilder(Human, "Bob", 18, SexMale, ColorBlack) 
-print(bob)
+    dob = AnimalBuilder(Dog, "Dob", 5, SexMale, ColorWhite)
+    print(dob)
 
-dob = AnimalBuilder(Dog, "Dob", 5, SexMale, ColorWhite)
-print(dob)
-
-bod = AnimalBuilder(Alien, "Bod", 57, SexFemale, Color)
-print(bod)
+    bod = AnimalBuilder(Alien, "Bod", 57, SexFemale, Color)
+    print(bod)
