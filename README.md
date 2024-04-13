@@ -1,2 +1,2 @@
-# OOPSOLIDHuman
-Creates Human using Builder and Bridge pattern
+# OOPSOLIDAnimal
+Creates Animal using Builder and Bridge pattern
