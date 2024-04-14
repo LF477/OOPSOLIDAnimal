@@ -13,11 +13,11 @@ jobs:
     image: composer:latest
     volumes:
       - ${{ github.workspace }}:/app
-  step:
-    - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Run composer install
-      run: composer install
+      - name: Run composer install
+        run: composer install
 
-    - name: Run tests
-      run: python -m unittest test_*.py
+      - name: Run tests
+        run: python -m unittest test_*.py
