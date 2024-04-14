@@ -9,7 +9,7 @@ on:
 jobs:
   docker:
     runs-on: self-hosted
-    container: composer:latest
+    container:
       image: composer:latest
       volumes:
         - ${{ github.workspace }}:/app
