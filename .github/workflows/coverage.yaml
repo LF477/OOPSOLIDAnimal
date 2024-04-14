@@ -26,7 +26,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         # coverage xml -o coverage.xml
         run: |
-            coverage run -a --data-file="coverage1.xml" -m pytest --cov=.
+            coverage run -a -m pytest --cov-report "xml:coverage1.xml" --cov=.
       - uses: orgoro/coverage@v3
         with:
             coverageFile: coverage1.xml
