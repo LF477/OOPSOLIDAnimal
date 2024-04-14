@@ -22,3 +22,12 @@ jobs:
         with:
             coverageFile: coverage.xml
             token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Coverage by coverage.py
+        if: ${{ github.event_name == 'pull_request' }}
+        # coverage xml -o coverage.xml
+        run: |
+            python -m coverage run *.py
+        uses: orgoro/coverage@v3
+        with:
+            coverageFile: coverage.xml
+            token: ${{ secrets.GITHUB_TOKEN }}
