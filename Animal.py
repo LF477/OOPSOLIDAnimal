@@ -127,7 +127,7 @@ class AnimalBuilder(Builder):
         # raise NotImplementedError
 
     def getResult(self):
-        return str(self) + f" with {", ".join(self.animal.parts)}"
+        return str(self) + f" with {', '.join(self.animal.parts)}"
 
     def __str__(self) -> str:
         return str(self.animal)
