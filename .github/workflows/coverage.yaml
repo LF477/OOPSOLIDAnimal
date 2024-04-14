@@ -15,19 +15,19 @@ jobs:
     steps:
       - name: Test with pytest
         run: |
-            pytest --cov-report "xml:coverage.xml"  --cov=.
+            pytest --cov-report "xml:coverage.xml"  --cov=. --fail-under=99
       - name: Create Coverage
         if: ${{ github.event_name == 'pull_request' }}
         uses: orgoro/coverage@v3
         with:
             coverageFile: coverage.xml
             token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Coverage by coverage.py
-        if: ${{ github.event_name == 'pull_request' }}
-        # coverage xml -o coverage.xml
-        run: |
-            coverage run -a -m pytest --cov-report "xml:coverage1.xml" --cov=.
-      - uses: orgoro/coverage@v3
-        with:
-            coverageFile: coverage1.xml
-            token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create Coverage by coverage.py
+      #   if: ${{ github.event_name == 'pull_request' }}
+      #   # coverage xml -o coverage.xml
+      #   run: |
+      #       coverage run -a -m pytest --cov-report "xml:coverage1.xml" --cov=.
+      # - uses: orgoro/coverage@v3
+      #   with:
+      #       coverageFile: coverage1.xml
+      #       token: ${{ secrets.GITHUB_TOKEN }}
