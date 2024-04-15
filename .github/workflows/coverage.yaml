@@ -15,7 +15,6 @@ jobs:
         run: |
             pytest --cov-report "json:coverage.json"  --cov=.
       - name: Create Coverage
-        """create coverage with higlighting not covered lines"""
         if: ${{ github.event_name == 'pull_request' }}
         uses: orgoro/coverage@v3.1
         with:
