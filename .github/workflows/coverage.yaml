@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Test with pytest
         run: |
-            pytest --cov-report "xml:coverage.xml"  --cov=.
+            pytest --cov-report "xml:coverage.xml" --cov-report=term-missing  --cov=.
       - name: Create Coverage
         if: ${{ github.event_name == 'pull_request' }}
         uses: orgoro/coverage@v3.1
@@ -22,6 +22,11 @@ jobs:
             thresholdAll: 0.99
             token: ${{ secrets.GITHUB_TOKEN }}
       
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Coverage Report
+          path: coverage.xml
+
       # - name: Create Coverage by coverage.py
       #   if: ${{ github.event_name == 'pull_request' }}
       #   # coverage xml coverage1.xml *.py   
