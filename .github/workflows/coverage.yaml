@@ -13,12 +13,12 @@ jobs:
     steps:
       - name: Test with pytest
         run: |
-            pytest --cov-report "json:coverage.json"  --cov=.
+            pytest --cov-report "xml:coverage.xml"  --cov=.
       - name: Create Coverage
         if: ${{ github.event_name == 'pull_request' }}
         uses: orgoro/coverage@v3.1
         with:
-            coverageFile: coverage.json
+            coverageFile: coverage.xml
             thresholdAll: 0.99
             token: ${{ secrets.GITHUB_TOKEN }}
       
