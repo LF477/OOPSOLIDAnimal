@@ -1,5 +1,7 @@
 import unittest
 import Animal
+import io
+import contextlib
 
 
 class Tests(unittest.TestCase):
@@ -26,9 +28,14 @@ class Tests(unittest.TestCase):
         # Arrange
         app = Animal.App()
         # Act
-        # Assert
-        with self.assertRaisesRegex(TypeError, "12 must has wrong type"):
-            app.make_human(12, 18, "male", "black")
+        with self.subTest("Internal classes"):
+            # Assert
+            with self.assertRaisesRegex(TypeError, "12 must has wrong type"):
+                app.make_human(12, 18, "male", "black")
+        with self.subTest("My classes"):
+            # Assert
+            with self.assertRaisesRegex(TypeError, "<class 'Animal.Color'> must has wrong type"):
+                Animal.Director(Animal.Human, "Bob", 18, Animal.Color, Animal.Color)
 
     def test_more_args(self):
         # Arrange
@@ -45,9 +52,27 @@ class Tests(unittest.TestCase):
         app.make_human("Bob", 18, "male", "black")
         app.make_human("Dob", 241, "male", "right color")
         app.make_alien("Bod", 57, "", "")
+        app.make_alien("Boda", 5700, "f", "")
         app.make_dog("Dob", 8, "f", "w")
+        app.make_dog("Dobd", 1, "m", "")
         # Assert
-        self.assertEqual(len(app.get_all_animals(need_to_print=False)), 4)
+        with self.subTest("All animals"):
+            self.assertEqual(len(app.get_all_animals(need_to_print=False)), 6)
+
+        with self.subTest("Humans"):
+            self.assertEqual(len(app.get_all_animals(Animal.Human, need_to_print=False)), 2)
+
+        with self.subTest("All animals with print"):
+            with contextlib.redirect_stdout(io.StringIO()) as f:
+                app.get_all_animals()
+            list_of_animals = f.getvalue().split("\n")[:-1]
+            self.assertEqual(list_of_animals, app.get_all_animals(need_to_print=False))
+
+        with self.subTest("Humans with print"):
+            with contextlib.redirect_stdout(io.StringIO()) as f:
+                app.get_all_animals(Animal.Human)
+            list_of_animals = f.getvalue().split("\n")[:-1]
+            self.assertEqual(list_of_animals, app.get_all_animals(Animal.Human, need_to_print=False))
 
     def test_different_parts_quantity(self):
         # Arrange
@@ -78,5 +103,5 @@ class Tests(unittest.TestCase):
             self.assertEqual(len(app.get_all_animals(need_to_print=False)), 4)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     unittest.main()
