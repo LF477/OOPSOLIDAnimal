@@ -1,5 +1,5 @@
 import unittest
-import Animal
+import OOPSOLIDHuman.App as App
 import io
 import contextlib
 
@@ -7,7 +7,7 @@ import contextlib
 class Tests(unittest.TestCase):
     def test_standart_input(self):
         # Arrange
-        app = Animal.App()
+        app = App.App()
         # Act
         with self.subTest("Human"):
             human = app.make_human("Bob", 18, "male", "black")
@@ -26,7 +26,7 @@ class Tests(unittest.TestCase):
 
     def test_invalid_input(self):
         # Arrange
-        app = Animal.App()
+        app = App.App()
         # Act
         with self.subTest("Internal classes"):
             # Assert
@@ -35,11 +35,11 @@ class Tests(unittest.TestCase):
         with self.subTest("My classes"):
             # Assert
             with self.assertRaisesRegex(TypeError, "<class 'Animal.Color'> must has wrong type"):
-                Animal.Director(Animal.Human, "Bob", 18, Animal.Color, Animal.Color)
+                App.Director(App.Human, "Bob", 18, App.Color, App.Color)
 
     def test_more_args(self):
         # Arrange
-        app = Animal.App()
+        app = App.App()
         # Act
         # Assert
         with self.assertRaises(TypeError):
@@ -47,7 +47,7 @@ class Tests(unittest.TestCase):
 
     def test_several_animals(self):
         # Arrange
-        app = Animal.App()
+        app = App.App()
         # Act
         app.make_human("Bob", 18, "male", "black")
         app.make_human("Dob", 241, "male", "right color")
@@ -60,7 +60,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(len(app.get_all_animals(need_to_print=False)), 6)
 
         with self.subTest("Humans"):
-            self.assertEqual(len(app.get_all_animals(Animal.Human, need_to_print=False)), 2)
+            self.assertEqual(len(app.get_all_animals(App.Human, need_to_print=False)), 2)
 
         with self.subTest("All animals with print"):
             with contextlib.redirect_stdout(io.StringIO()) as f:
@@ -70,13 +70,13 @@ class Tests(unittest.TestCase):
 
         with self.subTest("Humans with print"):
             with contextlib.redirect_stdout(io.StringIO()) as f:
-                app.get_all_animals(Animal.Human)
+                app.get_all_animals(App.Human)
             list_of_animals = f.getvalue().split("\n")[:-1]
-            self.assertEqual(list_of_animals, app.get_all_animals(Animal.Human, need_to_print=False))
+            self.assertEqual(list_of_animals, app.get_all_animals(App.Human, need_to_print=False))
 
     def test_different_parts_quantity(self):
         # Arrange
-        app = Animal.App()
+        app = App.App()
         # Act
         with self.subTest("Single names"):
             bob = app.make_human("Bob", 18, "male", "black", head=2, chest=1, arm=4, leg=1, special_feature=1)
