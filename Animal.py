@@ -70,8 +70,11 @@ class Alien(Animal):
 
 
 # Builder
-class Builder:
+class Builder:   # pragma: no cover
     def __init__(self):
+        pass
+
+    def set_animal(self):
         pass
 
     def build_animal(self):
@@ -148,11 +151,10 @@ class Director:
                 if not issubclass(arg.__class__, list_of_needed_types[index]):
                     raise TypeError(f"{arg} must has wrong type")
             else:
-                if arg.__base__ is not object:
-                    if not issubclass(arg.__base__, list_of_needed_types[index]):
-                        raise TypeError(f"{arg} must has wrong type")
+                if not list_of_needed_types[index].__subclasscheck__(arg):
+                    raise TypeError(f"{arg} must has wrong type")
 
-    def build(self, builder: AnimalBuilder, **kwargs):
+    def build(self, builder: Builder, **kwargs):
         builder.set_animal(self.animal)
         builder.build_animal(self.sex, self.color)
         builder.build_heads(kwargs["heads"] if "heads" in kwargs else kwargs["head"] if "head" in kwargs else 1)
@@ -222,7 +224,7 @@ class App:
         return animals_to_return
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     app = App()
     bob = app.make_human("Bob", 18, "m", "b", heads=2, chest=1, arms=4, legs=2, special_feature=1)
     app.make_human("Gob", 8, "f", "w")
