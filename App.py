@@ -1,59 +1,62 @@
+from Director import Director
+import Builder
+import Animal
+import Sex
+import Color
+
+
 class App:
     def __init__(self):
-        self.sexs = {"male": SexMale, "m": SexMale, "female": SexFemale, "f": SexFemale}
-        self.colors = {"white": ColorWhite, "w": ColorWhite, "black": ColorBlack, "b": ColorBlack}
+        self.sexs = {"male": Sex.SexMale, "m": Sex.SexMale, "female": Sex.SexFemale, "f": Sex.SexFemale, "": Sex.Sex}
+        self.colors = {"white": Color.ColorWhite, "w": Color.ColorWhite, "black": Color.ColorBlack, "b": Color.ColorBlack, "": Color.Color}
+        self.define_animals = {"human": Animal.Human, "dog": Animal.Dog, "alien": Animal.Alien, "h": Animal.Human, "d": Animal.Dog, "a": Animal.Alien}
         self.animals = {}
 
-    def make_human(self, name: str, age: int, sex: str, color: str, *args, **kwargs) -> Human:
+    # def make_human(make_function) -> Animal.Human:
+    #     def insert_name(*args, **kwargs):
+    #         pass
+    #     return insert_name
+
+    def make_animal(self, animal_species: str, name: str, age: int, sex: str, color: str, *args, **kwargs) -> Animal.Animal:
         if args != ():
             raise TypeError(f"Wrong number of arguments, {args} was excess")
-        director = Director(Human, name, age, self.sexs[sex] if sex in self.sexs else Sex, self.colors[color] if color in self.colors else Color)
-        builder = AnimalBuilder()
+
+        try:
+            animal_to_use = self.define_animals[animal_species]
+            sex_to_use = self.sexs[sex]
+            color_to_use = self.colors[color]
+        except KeyError as err:
+            raise ValueError(f"Wrong argument: {err}") from err
+
+        director = Director(animal_to_use, name, age, sex_to_use, color_to_use)
+        builder = Builder.AnimalBuilder()
         director.build(builder, **kwargs)
-        human = builder.getResult()
-        if Human not in self.animals:
-            self.animals[Human] = [human]
+        animal = builder.getResult()
+        if animal_to_use not in self.animals:
+            self.animals[animal_to_use] = [animal]
         else:
-            self.animals[Human] += [human]
-        return human
+            self.animals[animal_to_use] += [animal]
+        return animal
 
-    def make_dog(self, name: str, age: int, sex: str, color: str) -> Dog:
-        director = Director(Dog, name, age, self.sexs[sex] if sex in self.sexs else Sex, self.colors[color] if color in self.colors else Color)
-        builder = AnimalBuilder()
-        director.build(builder)
-        dog = builder.getResult()
-        if Dog not in self.animals:
-            self.animals[Dog] = [dog]
-        else:
-            self.animals[Dog] += [dog]
-        return dog
-
-    def make_alien(self, name: str, age: int, sex: str, color: str) -> Alien:
-        director = Director(Alien, name, age, self.sexs[sex] if sex in self.sexs else Sex, self.colors[color] if color in self.colors else Color)
-        builder = AnimalBuilder()
-        director.build(builder)
-        alien = builder.getResult()
-        if Alien not in self.animals:
-            self.animals[Alien] = [alien]
-        else:
-            self.animals[Alien] += [alien]
-        return alien
-
-    def get_all_animals(self, animal: Animal = None, need_to_print: bool = True) -> list:
+    def get_all_animals(self, animal_species: str = None, need_to_print: bool = True) -> list:
         if need_to_print:
             all_animals = ""
         animals_to_return = []
-        if animal is None:
-            for animal in self.animals:
-                animals_to_return += self.animals[animal]
+        if animal_species is None:
+            for animal_class in self.animals:
+                animals_to_return += self.animals[animal_class]
                 if need_to_print:
-                    all_animals += "\n".join(self.animals[animal]) + "\n"
+                    all_animals += "\n".join(self.animals[animal_class]) + "\n"
             if need_to_print:
                 print(all_animals, end="")
         else:
-            animals_to_return += self.animals[animal]
+            try:
+                animal_species = self.define_animals[animal_species]
+            except KeyError as err:
+                raise ValueError(f"Wrong argument: {err}") from err
+            animals_to_return += self.animals[animal_species]
             if need_to_print:
-                all_animals += "\n".join(self.animals[animal])
+                all_animals += "\n".join(self.animals[animal_species])
                 print(all_animals)
         return animals_to_return
 

@@ -35,36 +35,50 @@ class AnimalBuilder(Builder):
         self.animal = animal
 
     def build_animal(self, sex: Sex, color: Color):
+        if not isinstance(sex, Sex) and not issubclass(sex, Sex):
+            raise TypeError(f"{sex} should be class Sex")
+        if not isinstance(color, Color) and not issubclass(color, Color):
+            raise TypeError(f"{color} should be class Color")
         self.animal.set_sex(sex())
         self.animal.set_color(color())
 
+    def check_quantity(build_function):
+        def check_positive(*args):
+            # print(f"args {args}")
+            if args[1] < 0:
+                raise ValueError(f"{args[0]} should be positive")
+            build_function(*args)
+        return check_positive
+
+    @check_quantity
     def build_heads(self, quantity: int):
         self.animal.heads = f"{quantity} head" + ["", "s"][quantity > 1]
         self.animal.parts += [self.animal.heads]
         # raise NotImplementedError
 
+    @check_quantity
     def build_chests(self, quantity: int):
         self.animal.chests = f"{quantity} chest" + ["", "s"][quantity > 1]
         self.animal.parts += [self.animal.chests]
         # raise NotImplementedError
 
+    @check_quantity
     def build_arms(self, quantity: int):
         self.animal.arms = f"{quantity} arm" + ["", "s"][quantity > 1]
         self.animal.parts += [self.animal.arms]
         # raise NotImplementedError
 
+    @check_quantity
     def build_legs(self, quantity: int):
         self.animal.legs = f"{quantity} leg" + ["", "s"][quantity > 1]
         self.animal.parts += [self.animal.legs]
         # raise NotImplementedError
 
+    @check_quantity
     def build_special_features(self, quantity: int):
         self.animal.special_features = f"{quantity} special feature" + ["", "s"][quantity > 1]
         self.animal.parts += [self.animal.special_features]
         # raise NotImplementedError
 
     def getResult(self):
-        return str(self) + f" with {', '.join(self.animal.parts)}"
-
-    def __str__(self) -> str:
-        return str(self.animal)
+        return self.animal

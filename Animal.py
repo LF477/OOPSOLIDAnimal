@@ -5,9 +5,9 @@ from Color import Color
 # Animals
 class Animal:
     def __init__(self, name: str, age: int):
-        if type(name) != str:
+        if type(name) is not str:
             raise TypeError("Name should be string")
-        if type(age) != int:
+        if type(age) is not int:
             raise TypeError("Age should be integer")
         self.name = name
         self.age = age
@@ -20,7 +20,7 @@ class Animal:
         self.color = color
 
     def __str__(self) -> str:
-        return f"{self.name} is {self.age} years old {self.sex} {self.color} {self.__class__.__name__.lower()}"
+        return f"{self.name} is {self.age} years old {self.sex} {self.color} {self.__class__.__name__.lower()}" + [f"with {', '.join(self.parts)}", ""][self.parts == []]
 
 
 class Human(Animal):
