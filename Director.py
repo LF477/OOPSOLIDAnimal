@@ -6,12 +6,14 @@ from Color import Color
 
 class Director:
     def __init__(self, species: Animal, name: str, age: int, sex: Sex, color: Color):
-        self.animal = species(name, age)
+        self.species = species
+        self.name = name
+        self.age = age
         self.sex = sex
         self.color = color
 
     def build(self, builder: Builder, **kwargs):
-        builder.set_animal(self.animal)
+        builder.set_animal(self.species(self.name, self.age))
         builder.build_animal(self.sex, self.color)
         builder.build_heads(kwargs["heads"] if "heads" in kwargs else kwargs["head"] if "head" in kwargs else 1)
         builder.build_chests(kwargs["chests"] if "chests" in kwargs else kwargs["chest"] if "chest" in kwargs else 1)
