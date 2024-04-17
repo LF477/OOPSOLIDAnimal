@@ -14,12 +14,18 @@ class Animal:
         self.parts = []
 
     def set_sex(self, sex: Sex):
-        if not isinstance(sex, Sex) and not issubclass(sex, Sex):
-            raise TypeError(f"{sex} should be class Sex")
+        try:
+            if not isinstance(sex, Sex) and not issubclass(sex, Sex):
+                raise TypeError(f"{sex} should be class Sex")
+        except TypeError:
+            raise TypeError(f"{sex} should be class sex")
         self.sex = sex
 
     def set_color(self, color: Color):
-        if not isinstance(color, Color) and not issubclass(color, Color):
+        try:
+            if not isinstance(color, Color) and not issubclass(color, Color):
+                raise TypeError(f"{color} should be class Color")
+        except TypeError:
             raise TypeError(f"{color} should be class Color")
         self.color = color
 
