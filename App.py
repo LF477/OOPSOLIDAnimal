@@ -81,6 +81,8 @@ class App:
                 animal_species = self.define_animals[animal_species.lower()]
             except KeyError as err:
                 raise ValueError(f"Wrong argument: {err}") from err
+            except AttributeError as err:
+                raise ValueError(f"Wrong argument: {err}") from err
             animals_to_return += self.animals[animal_species]
             if need_to_print:
                 all_animals += "\n".join(self.get_list_with_string_type(animal_species))
