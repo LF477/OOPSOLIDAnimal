@@ -4,10 +4,7 @@ import contextlib
 
 from App import App
 import Animal
-import Builder
-from Director import Director
-import Color
-import Sex
+
 
 class Tests(unittest.TestCase):
     def test_standart_input(self):
@@ -120,6 +117,42 @@ class Tests(unittest.TestCase):
         with self.subTest("Test if Bobs are all differnt"):
             # Assert
             self.assertEqual(len(app.get_all_animals(need_to_print=False)), 4)
+
+    def test_exceptions_not_tested(self):
+        # Arrange
+        app = App()
+        # Act
+        # Assert
+        with self.subTest("Wrong argument: empty string"):
+            with self.assertRaisesRegex(ValueError, "Wrong argument: "):
+                app.get_all_animals("", need_to_print=False)
+        with self.subTest("Wrong argument: list"):
+            with self.assertRaisesRegex(ValueError, "Wrong argument: 'list' object has no attribute 'lower'"):
+                app.get_all_animals([], need_to_print=False)
+        with self.subTest("Wrong argument: integer"):
+            with self.assertRaisesRegex(ValueError, "Wrong argument: 'int' object has no attribute 'lower'"):
+                app.get_all_animals(1, need_to_print=False)
+        with self.subTest("Wrong number of arguments, Dog"):
+            with self.assertRaises(TypeError):
+                app.make_dog("Bob", 1, "male", "black", "")
+        with self.subTest("Wrong number of arguments, Alien"):
+            with self.assertRaises(TypeError):
+                app.make_alien("Bob", 180, "male", "black", "")
+        with self.subTest("Integer should be positive"):
+            with self.assertRaises(ValueError):
+                app.make_human("Bob", 1, "male", "black", head=-1)
+        with self.subTest("sex should be class Sex [string]"):
+            with self.assertRaises(TypeError):
+                Animal.Animal("Bob", 1).set_sex("male")
+        with self.subTest("sex should be class Sex [class]"):
+            with self.assertRaises(TypeError):
+                Animal.Animal("Bob", 1).set_sex(Animal.Human)
+        with self.subTest("color should be class Color [string]"):
+            with self.assertRaises(TypeError):
+                Animal.Animal("Bob", 1).set_color("black")
+        with self.subTest("color should be class Color [class]"):
+            with self.assertRaises(TypeError):
+                Animal.Animal("Bob", 1).set_color(Animal.Alien)
 
 
 if __name__ == '__main__':  # pragma: no cover
