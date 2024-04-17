@@ -7,7 +7,7 @@ import Color
 
 class App:
     def __init__(self):
-        self.sexs = {"male": Sex.SexMale, "m": Sex.SexMale, "female": Sex.SexFemale, "f": Sex.SexFemale, "": Sex.Sex}
+        self.sexs = {"male": Sex.SexMale, "m": Sex.SexMale, "female": Sex.SexFemale, "f": Sex.SexFemale, "": Sex.SexDontWantToUse, "other": Sex.SexOther, "o": Sex.SexOther}
         self.colors = {"white": Color.ColorWhite, "w": Color.ColorWhite, "black": Color.ColorBlack, "b": Color.ColorBlack, "": Color.Color}
         self.define_animals = {"human": Animal.Human, "dog": Animal.Dog, "alien": Animal.Alien, "h": Animal.Human, "d": Animal.Dog, "a": Animal.Alien}
         self.animals = {}
@@ -18,7 +18,10 @@ class App:
         def make(*args, **kwargs):
             # print(f"Animal {args}, {kwargs}")
             try:
-                args = args[:3] + (args[0].sexs[args[3]], ) + args[4:]
+                if "other" in kwargs:
+                    args = args[:3] + (Sex.SexOther(kwargs["other"]), ) + args[4:]
+                else:
+                    args = args[:3] + (args[0].sexs[args[3]], ) + args[4:]
                 args = args[:4] + (args[0].colors[args[4]], ) + args[5:]
             except KeyError as err:
                 raise ValueError(f"Wrong argument: {err}") from err
