@@ -35,10 +35,6 @@ class AnimalBuilder(Builder):
         self.animal = animal
 
     def build_animal(self, sex: Sex, color: Color):
-        if not isinstance(sex, Sex) and not issubclass(sex, Sex):
-            raise TypeError(f"{sex} should be class Sex")
-        if not isinstance(color, Color) and not issubclass(color, Color):
-            raise TypeError(f"{color} should be class Color")
         self.animal.set_sex(sex())
         self.animal.set_color(color())
 
