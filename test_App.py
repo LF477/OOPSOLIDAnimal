@@ -24,7 +24,7 @@ class Tests(unittest.TestCase):
         with self.subTest("Alien"):
             alien = app.make_alien("Bod", 57, "", "")
             # Assert
-            self.assertEqual(str(alien), "Bod is 57 years old no sex no color alien with 1 head, 1 chest, 2 arms, 2 legs, 0 special feature")
+            self.assertEqual(str(alien), "Bod is 57 years old  no color alien with 1 head, 1 chest, 2 arms, 2 legs, 0 special feature")
 
     def test_invalid_input(self):
         # Arrange
@@ -37,7 +37,7 @@ class Tests(unittest.TestCase):
         with self.subTest("Age"):
             # Assert
             with self.assertRaisesRegex(TypeError, "Age should be integer"):
-                app.make_human("Bob", "Bob", "male", "black")
+                app.make_human("Bob", "Bob", "o", "black", other="B22")
         with self.subTest("Sex"):
             # Assert
             with self.assertRaisesRegex(ValueError, "Wrong argument: None"):
