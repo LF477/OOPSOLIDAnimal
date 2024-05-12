@@ -7,5 +7,5 @@ ADD . .
 
 RUN pip install pytest
 
-ENTRYPOINT [ "pytest" ]
-CMD [ "pytest" ]
+ENTRYPOINT ls -al
+CMD pytest
