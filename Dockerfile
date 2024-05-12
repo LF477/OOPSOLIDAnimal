@@ -7,6 +7,6 @@ ADD . .
 
 RUN pip install pytest
 RUN ls -al
-RUN chmod 777 ./test_APP.py
+RUN chmod 777 ./test_App.py
 # ENTRYPOINT ls -al
 ENTRYPOINT pytest
