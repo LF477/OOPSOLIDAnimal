@@ -3,17 +3,6 @@
 ################################################################################
 FROM python:3.13.0b1-alpine3.19
 
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
-USER appuser
-
 ADD . .
 RUN python -m ensurepip
 RUN python -m pip install --upgrade pip
