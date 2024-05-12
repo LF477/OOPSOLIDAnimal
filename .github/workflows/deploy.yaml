@@ -26,10 +26,10 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t lf477/tests-python .
+      run: docker build -t dadmon/tests-python .
 
     - name: Push image to Docker Hub
-      run: docker push lf477/tests-python
+      run: docker push dadmon/tests-python
       
     - name: Run tests in Docker container
-      run: docker run lf477/tests-python
+      run: docker run dadmon/tests-python
