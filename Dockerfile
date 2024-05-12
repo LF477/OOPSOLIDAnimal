@@ -2,7 +2,7 @@
 
 ################################################################################
 # Pick a base image to serve as the foundation for the other build stages
-FROM alpine:latest as base
+FROM python:3.13.0b1-alpine3.19 as base
 
 ################################################################################
 # Create a stage for building/compiling the application.
