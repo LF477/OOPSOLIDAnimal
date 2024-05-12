@@ -4,32 +4,49 @@ on:
   # pull_request:
 
   workflow_dispatch:
-
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
   deploy:
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+      # attestations: write
+      pages: write
+      # id-token: write
+    
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11.7
-          architecture: x64
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v3
 
-      - name: Install dependencies
-        run: |
-          python -m ensurepip
-          python -m pip install --upgrade pip
-          python -m pip install flake8 pytest pytest-cov coverage
-          if ( Test-Path -Path .\requirements.txt ) {pip install -r .\requirements.txt}
-
-      - name: Run flake8
-        # uses: suo/flake8-github-action@releases/v1
-        run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-      - name: "Running unit test..."
-        run: python test_*.py
+    - name: Build and push Docker image
+      id: push
+      # f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+    
+    - name: Pull and run Docker image
+      run: docker run ${{ steps.meta.outputs.tags }}
