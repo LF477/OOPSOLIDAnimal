@@ -33,8 +33,9 @@ RUN adduser \
     appuser
 USER appuser
 
-COPY --from=build /app /app
-
+COPY --from=build /app/ /app/
+RUN ls -al
 # What the container should run when it is started.
 WORKDIR /app
+RUN ls -al
 CMD [ "python", "test_APP.py" ]
