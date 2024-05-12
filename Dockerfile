@@ -7,4 +7,5 @@ ADD . .
 
 RUN pip install pytest
 
+ENTRYPOINT [ "pytest" ]
 CMD [ "pytest" ]
