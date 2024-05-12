@@ -37,4 +37,4 @@ COPY --from=build /app /app
 
 # What the container should run when it is started.
 WORKDIR /app
-CMD [ "python", "test_*.py" ]
+CMD [ "python", "test_APP.py" ]
